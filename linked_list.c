@@ -42,7 +42,6 @@ void insertAfterNode(node currentNode, int value){
     
     newNode -> next = currentNode -> next;
     currentNode -> next =  newNode;
-
 }
 
 void insertAtIndex(node head, int index, int value){
