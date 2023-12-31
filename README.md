@@ -52,4 +52,3 @@ Contributions are welcome! If you'd like to add a new data structure, algorithm,
 5. Submit a pull request.
 
 Please ensure your code follows the established coding style and includes relevant documentation.
-
