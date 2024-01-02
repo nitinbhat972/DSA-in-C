@@ -62,6 +62,102 @@ void insertAtIndex(node head, int index, int value){
     ptr -> next = newNode;
 }
 
+node deleteAtFirst(node head){
+    node newHead = head -> next;
+    free(head);
+
+    return newHead;
+}
+
+void deleteAtLast(node head){
+    node ptr = head -> next,
+    prev = head;
+
+    while(ptr -> next != NULL){
+        ptr = ptr -> next;
+        prev = prev -> next;
+    }
+
+    node tempNode = ptr;
+    prev -> next = NULL;
+
+    free(tempNode);
+}
+
+node deleteByNode(node head, node delNode){
+    node ptr = head;
+
+    if(delNode == ptr){
+        node newHead = ptr -> next;
+        return newHead;
+        free(delNode);
+    }
+
+    while(ptr -> next != delNode){
+        ptr = ptr -> next;
+    }
+
+    ptr -> next = delNode -> next;
+
+    free(delNode);
+
+    return head;
+}
+
+node deleteByValue(node head, int value){
+    node ptr = head,
+    prev = NULL;
+
+    if(ptr -> data == value){
+        node newHead = ptr -> next;
+        free(ptr);
+        return newHead;
+    }
+
+    while(ptr != NULL && ptr -> data != value){        
+        prev = ptr;
+        ptr = ptr -> next;
+    }
+
+    if(ptr == NULL){
+        printf("No node of value %d found\n", value);
+        return head;
+    }
+    prev -> next = ptr -> next;
+    
+    free(ptr);
+    
+    return head;
+}
+
+node deleteAtIndex(node head, int index){
+    node ptr = head,
+    prev = NULL;
+    int i = 0;
+    
+    if(i == index){
+        node newHead = ptr -> next;
+        free(ptr);
+        return newHead;
+    }
+
+    while(ptr != NULL && i < index){
+        prev = ptr;
+        ptr = ptr -> next;
+        i++;
+    }
+
+    if(ptr == NULL){
+        printf("Index out of bond\n");
+        return NULL;
+    }
+
+    prev -> next = ptr -> next;
+    free(ptr);
+
+    return head;
+}
+
 
 void displayData(node head){
     printf("Elements: ");
@@ -97,7 +193,13 @@ int main(){
     // head = insertAtFirst(head, 10);
     // insertAtEnd(head, 10);
     // insertAfterNode(second, 10);
-    insertAtIndex(head, 1, 10);
+    // insertAtIndex(head, 1, 10);
+
+    // head = deleteAtFirst(head);
+    // deleteAtLast(head);
+    // head = deleteByNode(head, second);
+    // head = deleteByValue(head, 3);
+    head = deleteAtIndex(head, 0);
 
     displayData(head);
 
