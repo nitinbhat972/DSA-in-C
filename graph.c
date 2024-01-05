@@ -91,13 +91,13 @@ int main() {
     // dfsIter(g, 0, visited);
 
     // For a segmented graph
-    for (int i = 0; i < g->vertex; i++) {
-        if(!visited[i]){//is the current node is not visited make it the startine node
+    // for (int i = 0; i < g->vertex; i++) {
+        // if(!visited[i]){//is the current node is not visited make it the startine node
             // bfs(g, i, visited); // Changing the starting node at every iteration
             // dfsRec(g, i, visited);
             // dfsIter(g, i, visited);
-        }
-    }
+        // }
+    // }
 
 
     return 0;
