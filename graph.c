@@ -78,7 +78,7 @@ void dfsRec(graph g, int startingNode, int visited[]) {
 }
 
 int main() {
-    graph g = createGraph(5);
+    graph g = createGraph(4);
     int visited[MAX_VERTEX] = {0};
     createEdge(g, 0, 1);
     createEdge(g, 0, 2);
