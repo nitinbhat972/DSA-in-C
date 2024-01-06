@@ -22,25 +22,104 @@ void linkNode(node root, node left, node right){
 void preOrderTraversal(node root){
     if(root != NULL){
         printf("%d ", root -> data);
-        preOrder(root -> left);
-        preOrder(root -> right);
+        preOrderTraversal(root -> left);
+        preOrderTraversal(root -> right);
     }
 }
 
 void inOrderTraversal(node root){
     if(root != NULL){
-        inOrder(root -> left);
+        inOrderTraversal(root -> left);
         printf("%d ", root -> data);
-        inOrder(root -> right);
+        inOrderTraversal(root -> right);
     }
 }
 
 void postOrderTraversal(node root){
     if(root != NULL){
-        postOrder(root -> left);
-        postOrder(root -> right);
+        postOrderTraversal(root -> left);
+        postOrderTraversal(root -> right);
         printf("%d ", root -> data);
     }
+}
+
+node insertionRec(node root, int value){
+    if(root == NULL){
+        return createNode(value);
+    }
+    if(value < root -> data){
+        root -> left = insertionRec(root -> left, value);
+    }
+    else{
+        root ->right = insertionRec(root -> right, value);
+    }
+    return root;
+}
+
+node insertionIter(node root, int value){
+    node currentNode = root,
+    newNode = createNode(value),
+    prev = NULL;
+
+    while(currentNode != NULL){
+        prev = currentNode;
+        if(value < currentNode -> data){
+            currentNode = currentNode -> left;
+        }
+        else{
+            currentNode = currentNode -> right;
+        }
+    }
+
+    if(prev == NULL){
+        root = newNode;
+    }
+    else if(value < prev -> data){
+        prev -> left = newNode;
+    }
+    else{
+        prev -> right = newNode;
+    }
+
+    return root;
+}
+
+node inOrdPred(node root){
+    root = root -> left;
+    while(root -> right != NULL){
+        root = root -> right;
+    }
+    return root;
+}
+
+node deleteNode(node root, int value){
+    if(root == NULL){
+        return root;
+    }
+    if(value < root -> data){
+        root -> left = deleteNode(root -> left, value);
+    }
+    else if(value > root -> data){
+        root -> right = deleteNode(root -> right, value);
+    }
+    else{
+        if(root -> left == NULL){
+            node temp = root -> right;
+            free(root);
+            return temp;
+        }
+        else if(root -> right == NULL){
+            node temp = root -> left;
+            free(root);
+            return temp;
+        }
+        else{
+            node iPre = inOrdPred(root);
+            root -> data = iPre -> data;
+            root -> left = deleteNode(root -> left, iPre -> data);
+        }
+    }
+    return root;
 }
 
 int main(){
@@ -50,7 +129,8 @@ int main(){
     //      30    70
     //     / \   / \
     //    20  40 60  80
-
+    
+    // Inorder = 20 30 40 50 60 70 80
 
     node root = createNode(50);
 
@@ -68,17 +148,23 @@ int main(){
 
     linkNode(root, p1, p2);
 
-    printf("Elements: ");
-    preOrder(root);
-    printf("\n");
+    // printf("Elements: ");
+    // preOrderTraversal(root);
+    // printf("\n");
 
     printf("Elements: ");
-    inOrder(root);
+    inOrderTraversal(root);
+    printf("\n");
+    // root = insertionRec(root, 10);
+    // root = insertionIter(root, 10);
+    deleteNode(root, 50);
+    printf("Elements: ");
+    inOrderTraversal(root);
     printf("\n");
 
-    printf("Elements: ");
-    postOrder(root);
-    printf("\n");
+    // printf("Elements: ");
+    // postOrderTraversal(root);
+    // printf("\n");
 
     return 0;
 }
