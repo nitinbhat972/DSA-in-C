@@ -7,7 +7,7 @@ typedef struct Node{
 }*node;
 
 typedef struct Stack{
-    node top;
+    struct Node * top;
 }*stack;
 
 int isEmpty(stack s){
