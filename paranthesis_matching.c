@@ -21,7 +21,7 @@ void push(char value){
     arr[++top] = value;
 }
 
-int pop(){
+char pop(){
     if(isEmpty()){
         printf("Stack Underflow\n");
     }
