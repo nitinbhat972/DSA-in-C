@@ -26,7 +26,7 @@ This repository is a collection of C programs that demonstrate the implementatio
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/DSA-in-C.git
+    git clone https://github.com/nitinbhat972/DSA-in-C.git
     cd DSA-in-C
     ```
 
