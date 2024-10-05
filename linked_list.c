@@ -1,221 +1,174 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// Define a struct for a node in the linked list
-typedef struct Node {
+typedef struct Node{
     int data;
     struct Node* next;
-} *node;
+}node;
 
-// Function to create a new node with the given value
-node createNode(int value) {
-    node ptr = malloc(sizeof(struct Node));
-    ptr->data = value;
-    ptr->next = NULL;
+node * createNode(int value){
+    node * newNode = malloc(sizeof(node));
 
-    return ptr;
-}
-
-// Function to link the current node to the next node
-void linkNode(node currentNode, node nextNode) {
-    currentNode->next = nextNode;
-}
-
-// Function to insert a node at the beginning of the list
-node insertAtFirst(node head, int value) {
-    node newNode = createNode(value);
-    newNode->next = head;
-    return newNode;
-}
-
-// Function to insert a node at the end of the list
-void insertAtEnd(node head, int value) {
-    node newNode = createNode(value);
-    node ptr = head;
-
-    while (ptr->next != NULL) {
-        ptr = ptr->next;
-    }
-
-    ptr->next = newNode;
-    newNode->next = NULL;
-}
-
-// Function to insert a node after a given node
-void insertAfterNode(node currentNode, int value) {
-    node newNode = createNode(value);
-    newNode->next = currentNode->next;
-    currentNode->next = newNode;
-}
-
-// Function to insert a node at a specific index
-void insertAtIndex(node head, int index, int value) {
-    node newNode = createNode(value);
-    node ptr = head;
-    int i = 0;
-
-    while (i < index - 1) {
-        if (ptr == NULL) {
-            printf("Index not found\n");
-            return;
-        }
-        ptr = ptr->next;
-        i++;
-    }
-
-    newNode->next = ptr->next;
-    ptr->next = newNode;
-}
-
-// Function to delete the first node in the list
-node deleteAtFirst(node head) {
-    node newHead = head->next;
-    free(head);
-    return newHead;
-}
-
-// Function to delete the last node in the list
-void deleteAtLast(node head) {
-    node ptr = head->next;
-    node prev = head;
-
-    while (ptr->next != NULL) {
-        ptr = ptr->next;
-        prev = prev->next;
-    }
-
-    node tempNode = ptr;
-    prev->next = NULL;
-    free(tempNode);
-}
-
-// Function to delete a specific node in the list
-node deleteByNode(node head, node delNode) {
-    node ptr = head;
-
-    if (delNode == ptr) {
-        node newHead = ptr->next;
-        free(ptr);
-        return newHead;
-    }
-
-    while (ptr->next != delNode) {
-        ptr = ptr->next;
-    }
-
-    ptr->next = delNode->next;
-    free(delNode);
-
-    return head;
-}
-
-// Function to delete a node with a specific value in the list
-node deleteByValue(node head, int value) {
-    node ptr = head;
-    node prev = NULL;
-
-    if (ptr->data == value) {
-        node newHead = ptr->next;
-        free(ptr);
-        return newHead;
-    }
-
-    while (ptr != NULL && ptr->data != value) {
-        prev = ptr;
-        ptr = ptr->next;
-    }
-
-    if (ptr == NULL) {
-        printf("No node with value %d found\n", value);
-        return head;
-    }
-
-    prev->next = ptr->next;
-    free(ptr);
-
-    return head;
-}
-
-// Function to delete a node at a specific index in the list
-node deleteAtIndex(node head, int index) {
-    node ptr = head;
-    node prev = NULL;
-    int i = 0;
-
-    if (i == index) {
-        node newHead = ptr->next;
-        free(ptr);
-        return newHead;
-    }
-
-    while (ptr != NULL && i < index) {
-        prev = ptr;
-        ptr = ptr->next;
-        i++;
-    }
-
-    if (ptr == NULL) {
-        printf("Index out of bond\n");
+    if(newNode == NULL){
+        printf("Node creation failed\n");
         return NULL;
     }
 
-    prev->next = ptr->next;
-    free(ptr);
+    newNode -> data = value;
+    newNode -> next = NULL;
 
-    return head;
+    return newNode;
 }
 
-// Function to display the elements of the linked list
-void displayData(node head) {
-    printf("Elements: ");
-    while (head != NULL) {
-        printf("%d ", head->data);
-        head = head->next;
+void linkNodes(node * prevNode, node * nextNode){
+    prevNode -> next = nextNode;
+}
+
+int isEmpty(node * head){
+    return head == NULL ? 1: 0;
+}
+
+void showList(node * head){
+    if(isEmpty(head)){
+        fprintf(stderr, "[*] Nothing to show the linked list is empty\n");
+        return;
     }
-    printf("\n");
+    node * temp = head;
+    while(temp != NULL){
+        printf("%d -> ", temp -> data);
+        temp = temp -> next;
+    }
+    printf("NULL\n");
 }
 
-// Function to free the memory allocated for the linked list
-void freeList(node head) {
-    node tempHead = head;
-    while (head != NULL) {
-        tempHead = head;
-        head = head->next;
-        free(tempHead);
+void insertAtHead(node ** head, int value){
+    node * newNode = createNode(value);
+    newNode -> next = *head;
+    *head = newNode;    
+}
+
+void insertAfterNode(node * prevNode, int value){
+    node * newNode = createNode(value);
+    newNode -> next = prevNode -> next;
+    prevNode -> next = newNode;
+}
+
+void insertAtEnd(node ** head, int value){
+    node * newNode = createNode(value);
+    node * temp = *head;
+
+    newNode -> data = value;
+    newNode -> next = NULL;
+
+    if(temp == NULL){
+        *head = newNode;
+        return;
+    }
+
+    while(temp -> next != NULL){
+        temp = temp -> next;
+    }
+    temp -> next = newNode;
+}
+
+void deleteSingleNode(node **head) {
+    node *temp = *head;
+    free(temp);
+    *head = NULL;
+}
+
+
+void deleteAtHead(node ** head){
+    if(isEmpty(*head)){
+        fprintf(stderr, "[*] Nothing to delete the linked list is emtpy\n");
+        return;
+    }
+
+    node * temp = *head;
+
+    *head = (*head) -> next;
+    free(temp);
+}
+
+void deleteAtEnd(node ** head){
+    if(isEmpty(*head)){
+        fprintf(stderr, "[*] Nothing to delete the linked list is emtpy\n");
+        return;
+    }
+    node * temp = *head,
+    * currentNode = NULL;
+
+    if(temp -> next == NULL){
+        deleteSingleNode(head);
+        return;
+    }
+    while(temp -> next != NULL){
+        currentNode = temp;
+        temp = temp -> next;
+    }
+    currentNode -> next = NULL;
+    free(temp);
+}
+
+void deleteUsingNode(node ** head, node * nodeToDelete){
+    if(isEmpty(*head)){
+        fprintf(stderr, "[*] Nothing to delete the linked list is emtpy\n");
+        return;
+    }
+    node * temp = *head,
+    * currentNode = NULL;
+    
+    if(nodeToDelete == NULL){
+        fprintf(stderr, "[*] Invalid node to delete\n");
+    }
+
+    if(nodeToDelete == *head){
+        deleteAtHead(head);
+        return;
+    }
+
+    while(temp != NULL){
+        if(temp == nodeToDelete){
+            currentNode -> next = temp -> next;
+            free(temp);
+            return;
+        }
+        currentNode = temp;
+        temp = temp -> next;
+    }
+    printf("[*] Node not found\n");
+}
+
+void freeList(node * head){
+    node * temp;
+    while(head != NULL){
+        temp = head;
+        head = head -> next;
+        free(temp);
     }
 }
 
-int main() {
-    // Create a linked list with four nodes
-    node head = createNode(1);
-    node second = createNode(2);
-    node third = createNode(3);
-    node fourth = createNode(4);
+int main(){
+    node * head = createNode(1);
+    node * second = createNode(2);
+    node * third = createNode(3);
+    node * forth = createNode(4);
+    node * fifth = createNode(4);
 
-    linkNode(head, second);
-    linkNode(second, third);
-    linkNode(third, fourth);
-    linkNode(fourth, NULL);
+    linkNodes(head, second);
+    linkNodes(second, third);
+    linkNodes(third, forth);
 
-    // Display the original list
-    displayData(head);
+    showList(head);
 
-    // Uncomment and use different functions to test different operations
-    // head = insertAtFirst(head, 10);
-    // insertAtEnd(head, 10);
+    // insertAtHead(&head, 0);
+    // insertAtEnd(&head, 5);
     // insertAfterNode(second, 10);
-    // insertAtIndex(head, 1, 10);
+    // deleteAtHead(&head);
+    // deleteAtEnd(&head);
+    // deleteUsingNode(&head, second);
+    showList(head);    
 
-    // head = deleteAtFirst(head);
-    // deleteAtLast(head);
-    // head = deleteByNode(head, second);
-    // head = deleteByValue(head, 3);
-    // head = deleteAtIndex(head, 0);
-
-    // Display the modified list
-    displayData(head);
-
-    // Free the memory allocated for the linked list
     freeList(head);
     return 0;
 }
