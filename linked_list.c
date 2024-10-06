@@ -41,6 +41,18 @@ void showList(node * head){
     printf("NULL\n");
 }
 
+void findANode(node * head, int value){
+    node * temp = head;
+    while(temp != NULL){
+        if(temp -> data== value){
+            printf("Node with value %d found\n", value);
+            return;
+        }
+        temp = temp -> next;
+    }
+    printf("Node with value %d not found\n", value);
+}
+
 void insertAtHead(node ** head, int value){
     node * newNode = createNode(value);
     newNode -> next = *head;
@@ -167,6 +179,7 @@ int main(){
     // deleteAtHead(&head);
     // deleteAtEnd(&head);
     // deleteUsingNode(&head, second);
+    findANode(head, 10);
     showList(head);    
 
     freeList(head);
